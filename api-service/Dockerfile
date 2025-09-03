@@ -10,11 +10,17 @@ COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
+# Copy only dependency files first for caching
+COPY composer.json composer.lock ./
+
+# Install PHP dependencies
+RUN composer install --no-interaction --prefer-dist --no-scripts --optimize-autoloader
+
 # Copy app
 COPY . .
 
-# Install PHP deps
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# Run scripts that require artisan
+RUN composer dump-autoload && php artisan package:discover
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache

@@ -35,8 +35,6 @@ services:
         condition: service_started
     env_file:
       - ./api-service/.env
-    volumes:
-      - ./api-service:/var/www
     ports:
       - "8000:8000"
 
@@ -55,8 +53,6 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       JWT_SECRET: "06ZRIrHP4vuCIGSkGIBIcNRCpysPRxC52Cb8eKiHILvzkv2WuEjoSogZxL22sJj9"
-    volumes:
-      - ./cache-service:/app
     ports:
       - "4000:4000"
 
